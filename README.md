@@ -1,5 +1,28 @@
 # README
 
+## Local setup with PostgreSQL
+
+Install and start PostgreSQL, then run:
+
+```shell
+bundle install
+bin/rails db:prepare
+bin/rails server
+```
+
+The app uses PostgreSQL for all environments, including the development cache and
+queue databases. Local connections default to `localhost:5432` with username and
+password `postgres`. Override these with `POSTGRES_HOST`, `POSTGRES_PORT`,
+`POSTGRES_USER`, and `POSTGRES_PASSWORD` to match your installation. For example,
+if your local server uses your macOS username and no password:
+
+```shell
+POSTGRES_USER="$USER" POSTGRES_PASSWORD="" bin/rails db:prepare
+POSTGRES_USER="$USER" POSTGRES_PASSWORD="" bin/rails server
+```
+
+Docker Compose sets the PostgreSQL connection variables automatically.
+
 # Important Notes to run in the container
 
 Update the memory to have 12 Gigs

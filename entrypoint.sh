@@ -12,18 +12,8 @@ if [ -n "${POSTGRES_HOST:-}" ]; then
   done
 fi
 
-if [ -n "${MYSQL_HOST:-}" ]; then
-  echo "Waiting for MySQL at $MYSQL_HOST..."
-  until mysqladmin ping -h"$MYSQL_HOST" -u"${MYSQL_USER:-root}" -p"${MYSQL_PASSWORD:-root}" --silent; do
-    sleep 1
-  done
-fi
-
-echo "Running mysql db:prepare..."
-bundle exec rails db:prepare
-
 echo "Running postgres db:prepare..."
-DB_MODE=postgres bundle exec rails db:prepare
+bundle exec rails db:prepare
 
 echo "Running datadog-agent start and ignoring failures..."
 service datadog-agent start || true
