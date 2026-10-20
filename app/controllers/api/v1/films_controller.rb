@@ -17,7 +17,7 @@ class Api::V1::FilmsController < ApplicationController
   private
 
   def json_response
-    Film.all.map { |m| {id: m.id, title: m.title} }.to_json
+    Film.pluck(:id, :title).map {|item| {id: item.first, title: item.last} }.to_json
   end
 
   def scope
