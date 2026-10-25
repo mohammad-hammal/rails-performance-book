@@ -1,37 +1,8 @@
-class Api::V1::FilmPresenter
-  attr_reader :resource
-
-  def initialize(film)
-    @resource = film
-  end
-
-  def to_json
-    object = Rails.cache.fetch(cache_key)
-    if object && object[:expiration_key] == expiration_key
-      return object.tap { |h| h.delete(:expiration_key) }
-    end
-
-    as_json.merge(expiration_key: expiration_key).tap do |object|
-      Rails.cache.write(cache_key, object)
-      object.delete(:expiration_key)
-    end
-  end
-
-
-  private
-  def cache_key
-    "Film-#{resource.id}"
-  end
-
+class Api::V1::FilmPresenter < Api::V1::Presenter
   def as_json
     {
       id: resource.id,
       title: resource.title
     }
   end
-
-  def expiration_key
-    resource.updated_at
-  end
-
 end
